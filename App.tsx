@@ -1,15 +1,15 @@
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import TabNavigator from './src/navigators/TabNavigator'
+import ChestDetailScreen from './src/screens/ChestDetailScreen';
 
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import DrawerNavigators from './src/navigators/DrawerNavigator';
 
 
 export type RootStackParamList = {
   MainDraw: undefined;
+  ChestDetail: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -20,6 +20,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="MainDraw">
         <Stack.Screen name="MainDraw" component={DrawerNavigators} options={{ headerShown: false }} />
+        <Stack.Screen name="ChestDetail" component={ChestDetailScreen} options={{ headerShown: true }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
