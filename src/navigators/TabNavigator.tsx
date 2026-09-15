@@ -24,7 +24,7 @@ export default function TabNavigators() {
         tabBarInactiveTintColor: 'gray'
     })}>
 
-            <Tab.Screen name="ProgressTab" component={ProgressScreen} options={{ title: "Progreso" }} />
+            <Tab.Screen name="ProgressTab" component={ProgressScreen} options={{ title: "Progreso", headerShown: true}} />
             <Tab.Screen name="RoutineTab" component={RoutineListScreen} options={{ title: "Rutina", headerShown: true }} />
         </Tab.Navigator>
     );
