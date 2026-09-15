@@ -20,7 +20,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="MainDraw">
         <Stack.Screen name="MainDraw" component={DrawerNavigators} options={{ headerShown: false }} />
-        <Stack.Screen name="ChestDetail" component={ChestDetailScreen} options={{ headerShown: true }} />
+        <Stack.Screen name="ChestDetail" component={ChestDetailScreen} options={{ title: 'Detalle de Rutina',headerShown: true }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

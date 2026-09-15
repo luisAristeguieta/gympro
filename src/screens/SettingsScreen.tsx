@@ -1,11 +1,11 @@
 import { Text, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function ScreenName() {
+export default function SettingsScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <Text style={styles.title}>ScreenName</Text>
+        <Text style={styles.title}>SettingsScreen</Text>
       </View>
     </SafeAreaView>
   );
