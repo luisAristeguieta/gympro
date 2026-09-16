@@ -68,4 +68,10 @@ npx expo start --tunnel
 Escanea el código QR resultante o abre el enlace generado desde la aplicación Expo Go en Android o iOS.
 
 ## 📱 Vista Previa de la Aplicación
-Captura 1 (Menú Lateral)Captura 2 (Pestañas e Íconos)Detalle de RutinaEntregable/Captura 1 (Menú Lateral).PNGEntregable/Captura 2 (Pestañas e Íconos).PNGEntregable/Detalle de Rutina.PNG
+
+| Captura 1 (Menú Lateral) | Captura 2 (Pestañas e Íconos) | Detalle de Rutina |
+| :---: | :---: | :---: |
+| <img src="./Entregable/Captura 1 (Menú Lateral).PNG" width="260" /> | <img src="./Entregable/Captura 2 (Pestañas e Íconos).PNG" width="260" /> | <img src="./Entregable/Detalle de Rutina.PNG" width="260" /> |
+
+### 📹 Video Demostrativo
+* **Ruta local del video:** `./Entregable/Video Demostrativo.mp4`
