@@ -83,6 +83,11 @@ export default function RoutineListScreen({ navigation }: any) {
           </View>
         )}
       />
+      ListEmptyComponent={
+          <View >
+            <Text>No hay rutinas registradas.</Text>
+          </View>
+        }
       </View>
     </SafeAreaView>
   );
