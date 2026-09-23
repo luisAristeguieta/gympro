@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 
-import ChestDetailScreen from './src/screens/RoutineDetailScreen';
 import DrawerNavigators from './src/navigators/DrawerNavigator';
 import { RoutineProvider } from './src/context/RoutineContext';
 import RoutineDetailScreen from './src/screens/RoutineDetailScreen';
