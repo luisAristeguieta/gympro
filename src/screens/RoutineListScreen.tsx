@@ -73,7 +73,7 @@ export default function RoutineListScreen({ navigation }: any) {
                 <TouchableOpacity
                   style={[styles.actionBtn, styles.viewBtn]}
                   onPress={() =>
-                    navigation.navigate('RoutineDetail', { routineId: item.id })
+                    navigation.navigate('DetailRoutine', { routineId: item.id })
                   }
                 >
                   <Ionicons name="eye-outline" size={18} color="#007AFF" />

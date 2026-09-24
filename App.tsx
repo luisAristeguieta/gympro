@@ -10,9 +10,9 @@ import AddRoutineScreen from './src/screens/AddRoutineScreen';
 
 export type RootStackParamList = {
   MainDraw: undefined;
-  ChestDetail: undefined;
-  RoutineDetail: { routineId: string };
+  DetailRoutine: { routineId: string };
   AddRoutine: { routineId?: string } | undefined;
+  EditRoutine: { routineId: string }; /// Esta modificacion esta correcta?  Si ya la se tiene AddRountineScreen, ya internamete se eleige si es nueva o se edita? 
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -30,7 +30,7 @@ export default function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="RoutineDetail"
+              name="DetailRoutine"
               component={RoutineDetailScreen}
               options={{
                 title: 'Detalle de Rutina',

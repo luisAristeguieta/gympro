@@ -13,16 +13,17 @@ Para la realización de este proyecto se diseñó la identidad visual de la marc
 
 ## 🏋️‍♂️ Descripción del Proyecto
 
-La aplicación implementa una jerarquía de navegación completa combinando tres navegadores y estructurando la interfaz de forma estética y funcional:
+La aplicación implementa una jerarquía completa de navegación combinada con persistencia de estado global en memoria:
 
 * **Menú Lateral (DrawerNavigator - Nivel 1):** Acceso global con iconos vectoriales a las secciones principales:
   * **Mi Entrenamiento:** Carga e integra directamente el navegador de pestañas completo.
   * **Configuración:** Vista independiente para ajustes generales de la cuenta y preferencias.
 * **Pestañas Inferiores (TabNavigator - Nivel 2):** Navegación persistente entre módulos de entrenamiento:
-  * **Progreso (`ProgressScreen`):** Indicadores y métricas semanales de rendimiento físico.
-  * **Rutinas (`RoutineListScreen`):** Interfaz dividida con Flexbox:
-    * **45% Superior:** Logotipo oficial de GymPro e imagotipo corporativo centrado.
-    * **55% Inferior:** Tarjeta de rutina destacada con botón de acción directa.
+   * **Progreso (ProgressScreen):** Indicadores y métricas semanales de rendimiento físico.
+   * **Rutinas (RoutineListScreen):** Listado dinámico con `FlatList` alimentado por `RoutineContext`:
+     * Cabecera compacta con imagotipo corporativo oficial GymPro.
+     * Tarjetas de rutinas con nombre, grupo muscular y duración estimada en minutos.
+     * Acciones rápidas por tarjeta: Ver Detalle (ojo), Editar (lápiz) y Eliminar (basurero con modal de confirmación).
 * **Pila de Navegación Global (RootStackNavigator - Nivel 3):** Navegación profunda hacia el detalle de entrenamiento:
   * **Detalle de Rutina (`ChestDetailScreen`):** Vista apilable que cubre el Drawer y las pestañas, mostrando el desglose técnico de series y ejercicios con botón nativo de retorno.
 
@@ -69,9 +70,9 @@ Escanea el código QR resultante o abre el enlace generado desde la aplicación 
 
 ## 📱 Vista Previa de la Aplicación
 
-| Captura 1 (Menú Lateral) | Captura 2 (Pestañas e Íconos) | Detalle de Rutina |
-| :---: | :---: | :---: |
-| <img src="./Entregable/Captura 1 (Menú Lateral).PNG" width="260" /> | <img src="./Entregable/Captura 2 (Pestañas e Íconos).PNG" width="260" /> | <img src="./Entregable/Detalle de Rutina.PNG" width="260" /> |
+| Listado Dinámico (Rutinas) | Detalle de Rutina | Creación de Rutina | Modificación de Rutina |
+| :---: | :---: | :---: | :---: |
+| <img src="./Entregable/Entregables%202/4.png" width="260" /> | <img src="./Entregable/Entregables%202/1.png" width="260" /> | <img src="./Entregable/Entregables%202/2.png" width="260" /> | <img src="./Entregable/Entregables%202/3.png" width="260" /> |
 
 ### 📹 Video Demostrativo
-* **Ruta local del video:** `./Entregable/Video Demostrativo.mp4`
+* **Ruta local del video:** `./Entregable/Entregables%202/20260922234656.mp4`
