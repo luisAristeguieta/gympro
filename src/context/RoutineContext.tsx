@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react'
+import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react'
+import { useSQLiteContext } from 'expo-sqlite'
 
 export type Routine = {
     id: string;
@@ -18,29 +19,80 @@ type RoutineContextType = {
 const RoutineContext = createContext<RoutineContextType | undefined>(undefined);
 
 export function RoutineProvider({ children }: { children: ReactNode }) {
-  const [routines, setRoutines] = useState<Routine[]>([
-    { id: '1', name: 'Press Banca', muscleGroup: 'Pecho', duration: 45, createdAt: new Date().toLocaleDateString() },
-    { id: '2', name: 'Fondos en Paralelas', muscleGroup: 'Tríceps', duration: 30, createdAt: new Date().toLocaleDateString() },
-    { id: '3', name: 'Press Inclinado', muscleGroup: 'Pecho', duration: 40, createdAt: new Date().toLocaleDateString() },
-  ]);
+  const db = useSQLiteContext();
+  const [routines, setRoutines] = useState<Routine[]>([]);
 
-  const addRoutine = (routine: Omit<Routine, 'id' | 'createdAt'>) => {
-    const newRoutine: Routine = {
-      ...routine,
-      id: Date.now().toString(),
-      createdAt: new Date().toLocaleDateString(),
-    };
+  // 1. Cargar datos desde SQLite al montar
+  const cargarRutinas = async () => {
+    try {
+      const resultado = await db.getAllAsync<Routine>('SELECT * FROM rutinas ORDER BY id DESC');
+      
+      if (resultado.length === 0) {
+        // Rutinas iniciales si la base de datos está vacía
+        const iniciales: Routine[] = [
+          { id: '1', name: 'Press Banca', muscleGroup: 'Pecho', duration: 45, createdAt: new Date().toLocaleDateString() },
+          { id: '2', name: 'Fondos en Paralelas', muscleGroup: 'Tríceps', duration: 30, createdAt: new Date().toLocaleDateString() },
+          { id: '3', name: 'Press Inclinado', muscleGroup: 'Pecho', duration: 40, createdAt: new Date().toLocaleDateString() },
+        ];
 
-    setRoutines((prevRoutines) => [...prevRoutines, newRoutine]);
+        for (const item of iniciales) {
+          await db.runAsync(
+            'INSERT INTO rutinas (id, name, muscleGroup, duration, createdAt) VALUES (?, ?, ?, ?, ?)',
+            [item.id, item.name, item.muscleGroup, item.duration, item.createdAt]
+          );
+        }
+
+        const freshRows = await db.getAllAsync<Routine>('SELECT * FROM rutinas ORDER BY id DESC');
+        setRoutines(freshRows);
+      } else {
+        setRoutines(resultado);
+      }
+    } catch (error) {
+      console.error('Error al cargar rutinas:', error);
+    }
   };
 
-  const updateRoutine = (id: string, updatedData: Omit<Routine, 'id' | 'createdAt'>) => {
-    setRoutines((prevRoutines) =>
-      prevRoutines.map((routine) => routine.id === id ? { ...routine, ...updatedData } : routine));
+  useEffect(() => {
+    cargarRutinas();
+  }, []);
+
+  // 2. Agregar rutina a SQLite y refrescar estado
+  const addRoutine = async (routine: Omit<Routine, 'id' | 'createdAt'>) => {
+    const newId = Date.now().toString();
+    const newCreatedAt = new Date().toLocaleDateString();
+
+    try {
+      await db.runAsync(
+        'INSERT INTO rutinas (id, name, muscleGroup, duration, createdAt) VALUES (?, ?, ?, ?, ?)',
+        [newId, routine.name, routine.muscleGroup, routine.duration, newCreatedAt]
+      );
+      cargarRutinas();
+    } catch (error) {
+      console.error('Error al guardar rutina:', error);
+    }
   };
 
-  const deleteRoutine = (id: string) => {
-    setRoutines((prevRoutines) => prevRoutines.filter((routine) => routine.id !== id));
+  // 3. Actualizar rutina en SQLite y refrescar estado
+  const updateRoutine = async (id: string, updatedData: Omit<Routine, 'id' | 'createdAt'>) => {
+    try {
+      await db.runAsync(
+        'UPDATE rutinas SET name = ?, muscleGroup = ?, duration = ? WHERE id = ?',
+        [updatedData.name, updatedData.muscleGroup, updatedData.duration, id]
+      );
+      cargarRutinas();
+    } catch (error) {
+      console.error('Error al actualizar rutina:', error);
+    }
+  };
+
+  // 4. Eliminar rutina en SQLite y refrescar estado
+  const deleteRoutine = async (id: string) => {
+    try {
+      await db.runAsync('DELETE FROM rutinas WHERE id = ?', [id]);
+      cargarRutinas();
+    } catch (error) {
+      console.error('Error al eliminar rutina:', error);
+    }
   };
 
   return (
