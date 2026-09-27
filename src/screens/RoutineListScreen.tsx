@@ -1,11 +1,21 @@
-import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image, Alert, FlatList } from 'react-native';
+import React, { useState, useMemo } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, Image, Alert, FlatList, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoutineContext } from '../context/RoutineContext';
 
+const FILTER_OPTIONS = ['Todos', 'Pecho', 'Espalda', 'Piernas'];
+
 export default function RoutineListScreen({ navigation }: any) {
   const { routines, deleteRoutine } = useRoutineContext();
+  const [selectedMuscle, setSelectedMuscle] = useState<string>('Todos');
+
+  const filteredRoutines = useMemo(() => {
+    if (selectedMuscle === 'Todos') return routines;
+    return routines.filter(
+      (r) => r.muscleGroup.trim().toLowerCase() === selectedMuscle.toLowerCase()
+    );
+  }, [routines, selectedMuscle]);
 
   const handleDelete = (id: string, name: string) => {
     Alert.alert(
@@ -40,7 +50,7 @@ export default function RoutineListScreen({ navigation }: any) {
             <Ionicons name="flame" size={24} color="#FF6B00" />
             <Text style={styles.cardTitle}>Rutinas</Text>
             <View style={styles.countBadge}>
-              <Text style={styles.countBadgeText}>{routines.length}</Text>
+              <Text style={styles.countBadgeText}>{filteredRoutines.length}</Text>
             </View>
           </View>
 
@@ -54,9 +64,39 @@ export default function RoutineListScreen({ navigation }: any) {
           </TouchableOpacity>
         </View>
 
-        {/* Listado de rutinas */}
+        {/* Barra de Filtro por Grupo Muscular */}
+        <View style={styles.filterWrapper}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.filterList}
+          >
+            {FILTER_OPTIONS.map((filter) => {
+              const isSelected = selectedMuscle === filter;
+              return (
+                <TouchableOpacity
+                  key={filter}
+                  style={[styles.filterChip, isSelected && styles.filterChipActive]}
+                  onPress={() => setSelectedMuscle(filter)}
+                  activeOpacity={0.7}
+                >
+                  <Text
+                    style={[
+                      styles.filterChipText,
+                      isSelected && styles.filterChipTextActive,
+                    ]}
+                  >
+                    {filter}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+        </View>
+
+        {/* Listado de rutinas filtradas */}
         <FlatList
-          data={routines}
+          data={filteredRoutines}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
@@ -105,7 +145,9 @@ export default function RoutineListScreen({ navigation }: any) {
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
               <Ionicons name="barbell-outline" size={40} color="#555555" />
-              <Text style={styles.emptyText}>No hay rutinas registradas.</Text>
+              <Text style={styles.emptyText}>
+                No hay rutinas para "{selectedMuscle}".
+              </Text>
             </View>
           }
         />
@@ -141,7 +183,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 12,
   },
   titleRow: {
     flexDirection: 'row',
@@ -177,6 +219,35 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
     fontSize: 14,
+  },
+  filterWrapper: {
+    marginBottom: 14,
+  },
+  filterList: {
+    flexDirection: 'row',
+    gap: 8,
+    paddingVertical: 2,
+  },
+  filterChip: {
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 20,
+    backgroundColor: '#242424',
+    borderWidth: 1,
+    borderColor: '#333333',
+  },
+  filterChipActive: {
+    backgroundColor: '#FF6B00',
+    borderColor: '#FF6B00',
+  },
+  filterChipText: {
+    fontSize: 13,
+    color: '#A0A0A0',
+    fontWeight: '500',
+  },
+  filterChipTextActive: {
+    color: '#FFFFFF',
+    fontWeight: '700',
   },
   listContent: {
     paddingBottom: 24,

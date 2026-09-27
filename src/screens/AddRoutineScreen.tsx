@@ -31,18 +31,36 @@ export default function AddRoutineScreen({ navigation, route }: any) {
     const clearmuscleGroup = muscleGroup.trim();
     const clearDuration = duration.trim();
 
-    if (!clearName || !clearmuscleGroup || !clearDuration) {
-      Alert.alert('Error', 'Todos los campos son obligatorios.');
+    // Validaciones individuales de campos obligatorios
+    if (!clearName) {
+      Alert.alert('Error', 'El nombre de la rutina es obligatorio.');
       return;
     }
 
+    if (!clearmuscleGroup) {
+      Alert.alert('Error', 'El grupo muscular es obligatorio.');
+      return;
+    }
+
+    if (!clearDuration) {
+      Alert.alert('Error', 'La duración es obligatoria.');
+      return;
+    }
+
+    // Validación numérica y rango permitido
     const durationNumber = parseFloat(clearDuration);
 
-    if (isNaN(durationNumber) || durationNumber <= 0) {
-      Alert.alert('Error', 'La duración debe ser un número mayor a 0.');
+    if (isNaN(durationNumber)) {
+      Alert.alert('Error', 'La duración debe ser un valor numérico.');
       return;
     }
 
+    if (durationNumber < 10 || durationNumber > 180) {
+      Alert.alert('Error', 'La duración debe estar comprendida entre 10 y 180 minutos.');
+      return;
+    }
+
+    // Guardado y redirección
     if (routineToEdit) {
       updateRoutine(routineToEdit.id, {
         name: clearName,
