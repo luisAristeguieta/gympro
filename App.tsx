@@ -12,7 +12,6 @@ export type RootStackParamList = {
   MainDraw: undefined;
   DetailRoutine: { routineId: string };
   AddRoutine: { routineId?: string } | undefined;
-  EditRoutine: { routineId: string }; /// Esta modificacion esta correcta?  Si ya la se tiene AddRountineScreen, ya internamete se eleige si es nueva o se edita? 
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet,TouchableOpacity,Image,Alert, FlatList, } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Image, Alert, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoutineContext } from '../context/RoutineContext';
@@ -39,6 +39,9 @@ export default function RoutineListScreen({ navigation }: any) {
           <View style={styles.titleRow}>
             <Ionicons name="flame" size={24} color="#FF6B00" />
             <Text style={styles.cardTitle}>Rutinas</Text>
+            <View style={styles.countBadge}>
+              <Text style={styles.countBadgeText}>{routines.length}</Text>
+            </View>
           </View>
 
           <TouchableOpacity
@@ -117,7 +120,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#121212',
   },
   topSection: {
-    height: 110, // Altura fija y reducida para que no empuje hacia abajo
+    height: 100,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 4,
@@ -127,7 +130,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   bottomSection: {
-    flex: 1, // Ocupa todo el resto disponible de la pantalla hacia arriba
+    flex: 1,
     backgroundColor: '#1A1A1A',
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
@@ -149,6 +152,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#FFFFFF',
+  },
+  countBadge: {
+    backgroundColor: 'rgba(255, 107, 0, 0.18)',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 12,
+  },
+  countBadgeText: {
+    color: '#FF6B00',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   addButton: {
     flexDirection: 'row',
