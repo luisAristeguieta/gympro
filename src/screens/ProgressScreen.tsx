@@ -7,7 +7,12 @@ import { useRoutineContext } from '../context/RoutineContext';
 export default function ProgressScreen() {
   const { routines } = useRoutineContext();
 
-  // Cálculos dinámicos basados en el estado actual de SQLite / Context
+  // Buscar rutina destacada actual
+  const featuredRoutine = useMemo(() => {
+    return routines.find((r) => r.featured);
+  }, [routines]);
+
+  // Cálculos dinámicos
   const stats = useMemo(() => {
     const totalRoutines = routines.length;
 
@@ -20,16 +25,13 @@ export default function ProgressScreen() {
       };
     }
 
-    // 1. Duración total
     const totalDuration = routines.reduce(
       (sum, item) => sum + (Number(item.duration) || 0),
       0
     );
 
-    // 2. Duración promedio
     const averageDuration = Math.round(totalDuration / totalRoutines);
 
-    // 3. Grupo muscular predominante (frecuencia)
     const muscleCounts: Record<string, number> = {};
     routines.forEach((r) => {
       const muscle = r.muscleGroup.trim();
@@ -64,9 +66,35 @@ export default function ProgressScreen() {
           <Text style={styles.subtitle}>Resumen dinámico de tus entrenamientos</Text>
         </View>
 
+        {/* Sección: Rutina Destacada */}
+        <View style={styles.featuredContainer}>
+          <View style={styles.featuredHeader}>
+            <Ionicons name="star" size={18} color="#FFD700" />
+            <Text style={styles.featuredTitle}>Rutina Destacada</Text>
+          </View>
+
+          {featuredRoutine ? (
+            <View style={styles.featuredCard}>
+              <View style={styles.featuredInfo}>
+                <Text style={styles.featuredName}>{featuredRoutine.name}</Text>
+                <Text style={styles.featuredMuscle}>{featuredRoutine.muscleGroup}</Text>
+              </View>
+              <View style={styles.featuredDurationBadge}>
+                <Ionicons name="time" size={14} color="#FFD700" />
+                <Text style={styles.featuredDurationText}>{featuredRoutine.duration} min</Text>
+              </View>
+            </View>
+          ) : (
+            <View style={styles.featuredEmpty}>
+              <Text style={styles.featuredEmptyText}>
+                No has marcado ninguna rutina como destacada aún.
+              </Text>
+            </View>
+          )}
+        </View>
+
         {/* Grid de Métricas */}
         <View style={styles.grid}>
-          {/* Total Rutinas */}
           <View style={styles.card}>
             <View style={styles.iconContainer}>
               <Ionicons name="barbell-outline" size={24} color="#FF6B00" />
@@ -75,7 +103,6 @@ export default function ProgressScreen() {
             <Text style={styles.metricLabel}>Total Rutinas</Text>
           </View>
 
-          {/* Duración Total */}
           <View style={styles.card}>
             <View style={styles.iconContainer}>
               <Ionicons name="time-outline" size={24} color="#FF6B00" />
@@ -84,7 +111,6 @@ export default function ProgressScreen() {
             <Text style={styles.metricLabel}>Duración Total</Text>
           </View>
 
-          {/* Duración Promedio */}
           <View style={styles.card}>
             <View style={styles.iconContainer}>
               <Ionicons name="speedometer-outline" size={24} color="#FF6B00" />
@@ -93,7 +119,6 @@ export default function ProgressScreen() {
             <Text style={styles.metricLabel}>Promedio por Sesión</Text>
           </View>
 
-          {/* Grupo Muscular Frecuente */}
           <View style={styles.card}>
             <View style={styles.iconContainer}>
               <Ionicons name="flame-outline" size={24} color="#FF6B00" />
@@ -120,7 +145,7 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: 20,
     marginTop: 10,
   },
   title: {
@@ -133,6 +158,72 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#A0A0A0',
     marginTop: 4,
+  },
+  featuredContainer: {
+    width: '100%',
+    marginBottom: 20,
+  },
+  featuredHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 8,
+  },
+  featuredTitle: {
+    color: '#FFD700',
+    fontSize: 15,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  featuredCard: {
+    backgroundColor: '#28241A',
+    borderRadius: 14,
+    padding: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#FFD700',
+  },
+  featuredInfo: {
+    flex: 1,
+  },
+  featuredName: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
+  featuredMuscle: {
+    color: '#CCCCCC',
+    fontSize: 13,
+    marginTop: 2,
+  },
+  featuredDurationBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: 'rgba(255, 215, 0, 0.15)',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+  },
+  featuredDurationText: {
+    color: '#FFD700',
+    fontWeight: 'bold',
+    fontSize: 13,
+  },
+  featuredEmpty: {
+    backgroundColor: '#1E1E1E',
+    borderRadius: 12,
+    padding: 14,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#2A2A2A',
+  },
+  featuredEmptyText: {
+    color: '#777777',
+    fontSize: 13,
   },
   grid: {
     width: '100%',

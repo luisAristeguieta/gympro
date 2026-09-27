@@ -7,7 +7,7 @@ import { useRoutineContext } from '../context/RoutineContext';
 const FILTER_OPTIONS = ['Todos', 'Pecho', 'Espalda', 'Piernas'];
 
 export default function RoutineListScreen({ navigation }: any) {
-  const { routines, deleteRoutine } = useRoutineContext();
+  const { routines, deleteRoutine, toggleFeatured } = useRoutineContext();
   const [selectedMuscle, setSelectedMuscle] = useState<string>('Todos');
 
   const filteredRoutines = useMemo(() => {
@@ -94,20 +94,39 @@ export default function RoutineListScreen({ navigation }: any) {
           </ScrollView>
         </View>
 
-        {/* Listado de rutinas filtradas */}
+        {/* Listado de rutinas */}
         <FlatList
           data={filteredRoutines}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
-            <View style={styles.card}>
+            <View style={[styles.card, item.featured && styles.cardFeatured]}>
               <View style={styles.cardInfo}>
-                <Text style={styles.routineName}>{item.name}</Text>
+                <View style={styles.titleRowCard}>
+                  <Text style={styles.routineName}>{item.name}</Text>
+                  {/* Botón de destacar */}
+                  <TouchableOpacity
+                    onPress={() => toggleFeatured(item.id)}
+                    hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                  >
+                    <Ionicons
+                      name={item.featured ? 'star' : 'star-outline'}
+                      size={20}
+                      color={item.featured ? '#FFD700' : '#666666'}
+                    />
+                  </TouchableOpacity>
+                </View>
+
                 <Text style={styles.routineMuscle}>{item.muscleGroup}</Text>
                 <View style={styles.badgeContainer}>
                   <Ionicons name="time-outline" size={14} color="#FF6B00" />
                   <Text style={styles.routineDuration}>{item.duration} min</Text>
+                  {item.featured && (
+                    <View style={styles.featuredBadge}>
+                      <Text style={styles.featuredBadgeText}>Destacada</Text>
+                    </View>
+                  )}
                 </View>
               </View>
 
@@ -263,8 +282,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#303030',
   },
+  cardFeatured: {
+    borderColor: '#FFD700',
+    backgroundColor: '#28241A',
+  },
   cardInfo: {
     flex: 1,
+  },
+  titleRowCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   routineName: {
     fontSize: 16,
@@ -279,13 +307,24 @@ const styles = StyleSheet.create({
   badgeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 8,
     marginTop: 6,
   },
   routineDuration: {
     fontSize: 12,
     fontWeight: '600',
     color: '#FF6B00',
+  },
+  featuredBadge: {
+    backgroundColor: 'rgba(255, 215, 0, 0.2)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  featuredBadgeText: {
+    color: '#FFD700',
+    fontSize: 10,
+    fontWeight: 'bold',
   },
   actionsContainer: {
     flexDirection: 'row',
