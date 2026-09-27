@@ -94,12 +94,14 @@ npx expo start --tunnel
 Escanea el código QR resultante o abre el enlace generado desde la aplicación Expo Go en Android o iOS.
 
 ## 📱 Vista Previa de la Aplicación
-(coloca las rutas aca exacta que te indido, asi como los videos que los coloque en Entregable video1.mp4 y video2.mp4)
-| Listado Dinámico (Rutinas) | Detalle de Rutina | Creación de Rutina | Modificación de Rutina |
+
+| Listado Dinámico | Detalle de Rutina | Creación / Edición | Panel de Progreso |
 | :---: | :---: | :---: | :---: |
-| <img src="./Entregable/1.png" width="260" /> | <img src="./Entregable/2.png" width="260" /> | <img src="./Entregable/3.png" width="260" /> | <img src="./Entregable/4.png" width="260" /> |
+| ![Listado Dinámico](./Entregable/1.PNG) | ![Detalle de Rutina](./Entregable/2.PNG) | ![Creación de Rutina](./Entregable/3.PNG) | ![Panel de Progreso](./Entregable/4.PNG) |
+
+---
 
 ### 📹 Videos Demostrativos y Entregables
-* **Ruta local del video:** 
-Video 1 (Explicación técnica del código): `./Entregable/video1.mp4`
-Video 2 (Demostración de la aplicación final): `./Entregable/video2.mp4`
+
+* 🎬 **Video 1 (Explicación técnica del código):** [Ver Video 1](./Entregable/video1.mp4)
+* 📱 **Video 2 (Demostración de la aplicación final):** [Ver Video 2](./Entregable/video2.mp4)
